@@ -65,39 +65,39 @@ To enable system-assigned managed identity on a VM, your account needs the [Virt
 3. When you're done, the following sections should added to the `resource` section of your template and it should resemble the following:
 
    ```JSON
-   "resources": [
-        {
-            //other resource provider properties...
-            "apiVersion": "2018-06-01",
-            "type": "Microsoft.Compute/virtualMachines",
-            "name": "[variables('vmName')]",
-            "location": "[resourceGroup().location]",
-            "identity": {
-                "type": "SystemAssigned",
-                },
-            },
-        
-            //The following appears only if you provisioned the optional VM extension (to be deprecated)
-            {
-            "type": "Microsoft.Compute/virtualMachines/extensions",
-            "name": "[concat(variables('vmName'),'/ManagedIdentityExtensionForWindows')]",
-            "apiVersion": "2018-06-01",
-            "location": "[resourceGroup().location]",
-            "dependsOn": [
-                "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'))]"
-            ],
-            "properties": {
-                "publisher": "Microsoft.ManagedIdentity",
-                "type": "ManagedIdentityExtensionForWindows",
-                "typeHandlerVersion": "1.0",
-                "autoUpgradeMinorVersion": true,
-                "settings": {
-                    "port": 50342
-                }
+"resources": [
+    {
+        //other resource provider properties...
+        "apiVersion": "2018-06-01",
+        "type": "Microsoft.Compute/virtualMachines",
+        "name": "[variables('vmName')]",
+        "location": "[resourceGroup().location]",
+        "identity": {
+            "type": "SystemAssigned"
+        }
+    },
+    
+    //The following appears only if you provisioned the optional VM extension (to be deprecated)
+    {
+        "type": "Microsoft.Compute/virtualMachines/extensions",
+        "name": "[concat(variables('vmName'),'/ManagedIdentityExtensionForWindows')]",
+        "apiVersion": "2018-06-01",
+        "location": "[resourceGroup().location]",
+        "dependsOn": [
+            "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'))]"
+        ],
+        "properties": {
+            "publisher": "Microsoft.ManagedIdentity",
+            "type": "ManagedIdentityExtensionForWindows",
+            "typeHandlerVersion": "1.0",
+            "autoUpgradeMinorVersion": true,
+            "settings": {
+                "port": 50342
             }
         }
-    ]
-   ```
+    }
+]
+```
 
 ### Assign a role the VM's system-assigned managed identity
 
@@ -171,6 +171,7 @@ The following example shows you how remove a system-assigned managed identity fr
     "location": "[resourceGroup().location]",
     "identity": { 
         "type": "None"
+    }
 }
 ```
 
@@ -323,6 +324,7 @@ To remove a user-assigned identity from a VM, your account needs the [Virtual Ma
       "location": "[resourceGroup().location]",
       "identity": { 
           "type": "None"
+      }
     }
    ```
    
